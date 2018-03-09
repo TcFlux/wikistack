@@ -5,13 +5,13 @@ const path = require('path')
 const models = require('./models')
 const app = express()
 
+const wikiRouter = require('./routes/wiki')
+const userRouter = require('./routes/user')
+
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')))
-
-// db.authenticate().then(() => {
-//     console.log("Connected to database!");
-// })
+app.use('/wiki', wikiRouter);
 
 app.get('/', (req, res) => {
     res.send("Homepage!");

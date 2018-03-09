@@ -3,6 +3,8 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const path = require('path')
 const models = require('./models')
+const main = require('./views/main')
+const index = require('./views/index')
 const app = express()
 
 const wikiRouter = require('./routes/wiki')
@@ -13,8 +15,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/wiki', wikiRouter);
 
-app.get('/', (req, res) => {
-    res.send("Homepage!");
+app.get('/', async (req, res) => {
+    const pages = await models.Page.findAll();
+    console.log(pages);
+    res.send(main(pages));
 });
 
 const PORT = 3000;
